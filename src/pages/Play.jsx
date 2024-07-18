@@ -162,8 +162,34 @@ export default function Play() {
     return new Promise((res) => setTimeout(res, s * 1000));
   }
 
-  function takeCardB(setTaker, giver, setGiver) {
-    giver[1].forEach((card) => {
+  function takeCardB(taker, setTaker, giveCard, setGiver, giver) {
+    giveCard[1].forEach((card) => {
+      if (giveCard[1].length > 0) {
+        if (taker == 1)
+          setOut((prev) => {
+            const tempOut = [...prev];
+            tempOut[0] = "save";
+            return tempOut;
+          });
+        else if (taker == 2)
+          setOut((prev) => {
+            const tempOut = [...prev];
+            tempOut[1] = "save";
+            return tempOut;
+          });
+        else if (taker == 3)
+          setOut((prev) => {
+            const tempOut = [...prev];
+            tempOut[2] = "save";
+            return tempOut;
+          });
+        else if (taker == 4)
+          setOut((prev) => {
+            const tempOut = [...prev];
+            tempOut[3] = "save";
+            return tempOut;
+          });
+      }
       setTaker((prev) => [[...prev[0], card], [...prev[1]]]);
     });
     setGiver((prev) => {
@@ -172,27 +198,56 @@ export default function Play() {
           prev[0].filter((_, idx) => idx != prev[0].length - 1),
           [prev[0][prev[0].length - 1]],
         ];
-      } else return [[...prev[0]], []];
+      } else {
+        if (prev[0][prev[0].length - 2]) return [[...prev[0]], []];
+        else {
+          if (giver == 1)
+            setOut((prev) => {
+              const tempOut = [...prev];
+              tempOut[0] = "out";
+              return tempOut;
+            });
+          else if (giver == 2)
+            setOut((prev) => {
+              const tempOut = [...prev];
+              tempOut[1] = "out";
+              return tempOut;
+            });
+          else if (giver == 3)
+            setOut((prev) => {
+              const tempOut = [...prev];
+              tempOut[2] = "out";
+              return tempOut;
+            });
+          else if (giver == 4)
+            setOut((prev) => {
+              const tempOut = [...prev];
+              tempOut[3] = "out";
+              return tempOut;
+            });
+        }
+        return [[...prev[0]], []];
+      }
     });
   }
 
   function takeCardA(taker) {
     if (taker == 1) {
-      takeCardB(setOneCard, twoCard, setTwoCard);
-      takeCardB(setOneCard, threeCard, setThreeCard);
-      takeCardB(setOneCard, fourCard, setFourCard);
+      takeCardB(taker, setOneCard, twoCard, setTwoCard, 2);
+      takeCardB(taker, setOneCard, threeCard, setThreeCard, 3);
+      takeCardB(taker, setOneCard, fourCard, setFourCard, 4);
     } else if (taker == 2) {
-      takeCardB(setTwoCard, oneCard, setOneCard);
-      takeCardB(setTwoCard, threeCard, setThreeCard);
-      takeCardB(setTwoCard, fourCard, setFourCard);
+      takeCardB(taker, setTwoCard, oneCard, setOneCard, 1);
+      takeCardB(taker, setTwoCard, threeCard, setThreeCard, 3);
+      takeCardB(taker, setTwoCard, fourCard, setFourCard, 4);
     } else if (taker == 3) {
-      takeCardB(setThreeCard, oneCard, setOneCard);
-      takeCardB(setThreeCard, twoCard, setTwoCard);
-      takeCardB(setThreeCard, fourCard, setFourCard);
+      takeCardB(taker, setThreeCard, oneCard, setOneCard, 1);
+      takeCardB(taker, setThreeCard, twoCard, setTwoCard, 2);
+      takeCardB(taker, setThreeCard, fourCard, setFourCard, 4);
     } else if (taker == 4) {
-      takeCardB(setFourCard, oneCard, setOneCard);
-      takeCardB(setFourCard, twoCard, setTwoCard);
-      takeCardB(setFourCard, threeCard, setThreeCard);
+      takeCardB(taker, setFourCard, oneCard, setOneCard, 1);
+      takeCardB(taker, setFourCard, twoCard, setTwoCard, 2);
+      takeCardB(taker, setFourCard, threeCard, setThreeCard, 3);
     }
   }
 
@@ -218,8 +273,7 @@ export default function Play() {
                 const tempTurn = ["", "", "", ""];
                 let idx = (prev.indexOf("turn") + 1) % Number(player);
                 while (out[idx] == "out") {
-                  idx++;
-                  if (idx >= Number(player) - 1) break;
+                  idx = (idx + 1) % Number(player);
                 }
                 tempTurn[idx] = "turn";
                 return tempTurn;
@@ -256,10 +310,10 @@ export default function Play() {
                   const tempTurn = ["", "", "", ""];
                   let idx = (prev.indexOf("turn") + 1) % Number(player);
                   while (out[idx] == "out") {
-                    idx++;
-                    if (idx >= Number(player) - 1) break;
+                    idx = (idx + 1) % Number(player);
                   }
                   tempTurn[idx] = "turn";
+                  console.log(tempTurn);
                   return tempTurn;
                 });
                 setTwoCard((prev) => {
@@ -297,8 +351,7 @@ export default function Play() {
                   const tempTurn = ["", "", "", ""];
                   let idx = (prev.indexOf("turn") + 1) % Number(player);
                   while (out[idx] == "out") {
-                    idx++;
-                    if (idx >= Number(player) - 1) break;
+                    idx = (idx + 1) % Number(player);
                   }
                   tempTurn[idx] = "turn";
                   return tempTurn;
@@ -339,8 +392,7 @@ export default function Play() {
                     const tempTurn = ["", "", "", ""];
                     let idx = (prev.indexOf("turn") + 1) % Number(player);
                     while (out[idx] == "out") {
-                      idx++;
-                      if (idx >= Number(player) - 1) break;
+                      idx = (idx + 1) % Number(player);
                     }
                     tempTurn[idx] = "turn";
                     return tempTurn;
@@ -378,8 +430,7 @@ export default function Play() {
                     const tempTurn = ["", "", "", ""];
                     let idx = (prev.indexOf("turn") + 1) % Number(player);
                     while (out[idx] == "out") {
-                      idx++;
-                      if (idx >= Number(player) - 1) break;
+                      idx = (idx + 1) % Number(player);
                     }
                     tempTurn[idx] = "turn";
                     return tempTurn;
