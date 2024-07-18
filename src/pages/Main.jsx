@@ -3,6 +3,7 @@ import Card from "../components/Card";
 import { useEffect, useState } from "react";
 import Bell from "../components/Bell";
 import { Link } from "react-router-dom";
+import { SquareArrowOutUpRight } from "lucide-react";
 
 export default function Main() {
   const [player, setPlayer] = useState(2);
@@ -12,6 +13,14 @@ export default function Main() {
         <Title>할리갈리</Title>
         <Box>
           <div>플레이어 수를 선택해주세요</div>
+          <div>
+            <Link
+              to="https://maze-gate-ac3.notion.site/f25dd3de31eb452582f79eee308c8e7e"
+              target="_blank"
+            >
+              게임 설명 보기 <SquareArrowOutUpRight />
+            </Link>
+          </div>
           <div>
             <Player
               style={{
@@ -94,11 +103,26 @@ const Box = styled.div`
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 1rem;
   & > div:nth-child(1) {
     font-size: 1.2rem;
   }
   & > div:nth-child(2) {
+    display: flex;
+    font-size: 0.9rem;
+    justify-content: center;
+    & > a {
+      color: #000;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.1rem;
+      & > svg {
+        height: 0.9rem;
+      }
+    }
+  }
+  & > div:nth-child(3) {
     display: flex;
   }
 `;
